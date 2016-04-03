@@ -5,7 +5,7 @@ package com.droidbabies.currentweather;
  */
 public class Weather {
     int temp, temp_max, temp_min;
-    String mdate, description, icon;
+    String  mdate, description, icon;
 
     public Weather(int temp, int temp_max, int temp_min, String mdate, String description, String icon) {
         this.temp = temp;

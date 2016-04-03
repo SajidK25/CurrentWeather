@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,17 +87,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     icon = jo.getString("icon");
 
                     // icon url
-                    String icon_url = "http://openweathermap.org/img/w/"
-                            + icon + ".png";
+                    String icon_url = "http://openweathermap.org/img/w/" + icon + ".png";
 
-                    ImageLoader imageLoader = MyApplication
-                            .getInstance().getImageLoader();
+                    ImageLoader imageLoader = MyApplication.getInstance().getImageLoader();
 
                     place_tv.setText(name + "," + country);
 
                     temp_tv.setText(temp + "\u2103");
-                    min_max_tv.setText(temp_min + "\u2103 /" + temp_max
-                            + "\u2103");
+                    min_max_tv.setText(temp_min + "\u2103 /" + temp_max + "\u2103");
                     desc_tv.setText(description);
 
                     iv.setImageUrl(icon_url, imageLoader);
@@ -143,20 +142,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
-
             case R.id.forecast:
 
-                Intent forecast_intent = new Intent(getApplicationContext(),
-                        Forecast.class);
+                Intent forecast_intent = new Intent(getApplicationContext(), Forecast.class);
 
                 forecast_intent.putExtra("id", id);
                 forecast_intent.putExtra("name", name);
-
                 startActivity(forecast_intent);
-
                 break;
         }
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+
+//        if (id == R.id.action_map) {
+//            openPreferredLocationInMap();
+//            return true;
+//        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

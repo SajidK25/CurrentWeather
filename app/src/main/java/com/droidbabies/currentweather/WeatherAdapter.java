@@ -18,32 +18,31 @@ import java.util.List;
  */
 public class WeatherAdapter extends BaseAdapter {
     Context context;
-    List<Weather> WeatherAdapter;
+    List<Weather> weathersItems;
     ImageLoader imageLoader = MyApplication.getInstance().getImageLoader();
 
-    public WeatherAdapter(Context context, List<Weather> WeatherItems) {
+    public WeatherAdapter(Context context, List<Weather> weathersItems) {
 
         this.context = context;
-        this.WeatherAdapter = WeatherAdapter;
-
+        this.weathersItems=weathersItems;
     }
 
     @Override
     public int getCount() {
 
-        return WeatherAdapter.size();
+        return weathersItems.size();
     }
 
     @Override
     public Object getItem(int position) {
 
-        return WeatherAdapter.get(position);
+        return weathersItems.get(position);
     }
 
     @Override
     public long getItemId(int position) {
 
-        return WeatherAdapter.indexOf(getItem(position));
+        return weathersItems.indexOf(getItem(position));
     }
 
     @Override
@@ -66,16 +65,14 @@ public class WeatherAdapter extends BaseAdapter {
         date_tv = (TextView) convertView.findViewById(R.id.fdate);
         niv = (NetworkImageView) convertView.findViewById(R.id.ficon);
 
-        Weather item = WeatherAdapter.get(position);
+        Weather item = weathersItems.get(position);
 
         temp_tv.setText(item.getTemp() + "\u2103");
-        minmax_tv.setText(item.getTemp_min() + "\u2103" + "\\"
-                + item.getTemp_min() + "\u2103");
+        minmax_tv.setText(item.getTemp_min() + "\u2103" + "\\" + item.getTemp_min() + "\u2103");
         desc_tv.setText(item.getDescription() + "");
         date_tv.setText(item.getMdate() + "");
 
-        String icon_url = "http://openweathermap.org/img/w/" + item.getIcon()
-                + ".png";
+        String icon_url = "http://openweathermap.org/img/w/" + item.getIcon() + ".png";
 
         niv.setImageUrl(icon_url, imageLoader);
 

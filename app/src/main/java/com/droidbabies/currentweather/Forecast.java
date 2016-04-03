@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -32,7 +34,7 @@ public class Forecast extends AppCompatActivity {
 
     ListView lv;
     WeatherAdapter adapter;
-    List<Weather> weatherItems = new ArrayList<Weather>();
+    List<Weather> weatherItems ;
 
     String place_id, place_name;
 
@@ -47,50 +49,52 @@ public class Forecast extends AppCompatActivity {
         setContentView(R.layout.forecast);
 
         lv = (ListView) findViewById(R.id.flv);
+        weatherItems = new ArrayList<>();
+        place_id = getIntent().getExtras().getString("id");
+        place_name = getIntent().getExtras().getString("name");
+        if (place_id.length() > 0 && place_name.length() > 0) {
+            //getActionBar().setSubtitle(place_name);
+            getSupportActionBar().setSubtitle(place_name);
 
-        Intent i = getIntent();
-        place_id = i.getExtras().getString("id");
-        place_name = i.getExtras().getString("name");
-
-        getActionBar().setSubtitle(place_name);
-
-        PD = new ProgressDialog(Forecast.this);
-        PD.setMessage("Loading.....");
-        PD.setCancelable(false);
-
-        String full_url = forecast_url + place_id;
-
-        adapter = new WeatherAdapter(getApplicationContext(), weatherItems);
-        lv.setAdapter(adapter);
+            PD = new ProgressDialog(Forecast.this);
+            PD.setMessage("Loading.....");
+            PD.setCancelable(false);
+            String appID="&appid=fec7a9fdb239c89d79724e223d71edbb";
+            String full_url = forecast_url + place_id + appID;
+            makejsonreq(full_url);
+            adapter = new WeatherAdapter(this, weatherItems);
+            lv.setAdapter(adapter);
 
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,
-                                    int position, long id) {
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1,
+                                        int position, long id) {
 
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Id: " + place_id + "Date: "
-                                + weatherItems.get(position).getMdate(),
-                        Toast.LENGTH_LONG).show();
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Id: " + place_id + "Date: "
+                                    + weatherItems.get(position).getMdate(),
+                            Toast.LENGTH_LONG).show();
 
-                Intent i = new Intent(getApplicationContext(), Interval.class);
+                    Intent i = new Intent(getApplicationContext(), Interval.class);
 
-                i.putExtra("placeid", place_id);
-                i.putExtra("name", place_name);
+                    i.putExtra("placeid", place_id);
+                    i.putExtra("name", place_name);
 
-                i.putExtra("mDate", weatherItems.get(position).getMdate());
-                i.putExtra("jo", mJsonObj.toString());
+                    i.putExtra("mDate", weatherItems.get(position).getMdate());
+                    i.putExtra("jo", mJsonObj.toString());
 
-                startActivity(i);
+                    startActivity(i);
 
-            }
-        });
+                }
+            });
 
-        makejsonreq(full_url);
 
+        }else {
+            Toast.makeText(Forecast.this, "id place name not found", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void makejsonreq(String url) {
@@ -134,19 +138,21 @@ public class Forecast extends AppCompatActivity {
                                 temp_min = (int) (main
                                         .getDouble("temp_min") - 273.15);
 
-                                JSONArray weather = jlist
-                                        .getJSONObject(i).getJSONArray(
-                                                "weather");
+                                JSONArray weather = jlist.getJSONObject(i).getJSONArray("weather");
 
-                                String icon = weather.getJSONObject(0)
-                                        .getString("icon");
-                                String description = weather
-                                        .getJSONObject(0).getString(
-                                                "description");
+                                JSONObject jo = weather.getJSONObject(0);
 
-                                Weather rItem = new Weather(temp, temp_max, temp_min,description, icon, mdate);
+                                String description = jo.getString("description");
+                                String icon= jo.getString("icon");
+                                Toast.makeText(Forecast.this, description+""+icon, Toast.LENGTH_SHORT).show();
+                                Weather rItem = new Weather(temp, temp_max, temp_min, description, icon, mdate);
+                                if (rItem!=null) {
+                                    weatherItems.add(rItem);
 
-                                weatherItems.add(rItem);
+
+                                }else {
+                                    Toast.makeText(Forecast.this, "NO Data arrived", Toast.LENGTH_SHORT).show();
+                                }
                             } // if end
                         } // if end
                     } // for end
@@ -168,5 +174,33 @@ public class Forecast extends AppCompatActivity {
 
         MyApplication.getInstance().addToReqQueue(jsonObjReqq, "jreqq");
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+
+//        if (id == R.id.action_map) {
+//            openPreferredLocationInMap();
+//            return true;
+//        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
 

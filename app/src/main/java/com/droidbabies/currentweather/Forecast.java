@@ -72,9 +72,7 @@ public class Forecast extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> arg0, View arg1,
                                         int position, long id) {
 
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "Id: " + place_id + "Date: "
+                    Toast.makeText(getApplicationContext(), "Id: " + place_id + "Date: "
                                     + weatherItems.get(position).getMdate(),
                             Toast.LENGTH_LONG).show();
 
@@ -145,9 +143,9 @@ public class Forecast extends AppCompatActivity {
                                 String description = jo.getString("description");
                                 String icon= jo.getString("icon");
                                 Toast.makeText(Forecast.this, description+""+icon, Toast.LENGTH_SHORT).show();
-                                Weather rItem = new Weather(temp, temp_max, temp_min, description, icon, mdate);
-                                if (rItem!=null) {
-                                    weatherItems.add(rItem);
+                                Weather wItem = new Weather(temp, temp_max, temp_min, description, icon, mdate);
+                                if (wItem!=null) {
+                                    weatherItems.add(wItem);
 
 
                                 }else {

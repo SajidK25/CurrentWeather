@@ -5,15 +5,25 @@ package com.droidbabies.currentweather;
  */
 public class Weather {
     int temp, temp_max, temp_min;
-    String  mdate, description, icon;
+    String mdate, description, icon;
 
-    public Weather(int temp, int temp_max, int temp_min, String mdate, String description, String icon) {
+    public Weather(int temp, int temp_max, int temp_min, String description,
+                   String icon, String mdate) {
+
         this.temp = temp;
         this.temp_max = temp_max;
         this.temp_min = temp_min;
-        this.mdate = mdate;
         this.description = description;
         this.icon = icon;
+        this.mdate = mdate;
+    }
+
+    public String getMdate() {
+        return mdate;
+    }
+
+    public void setMdate(String mdate) {
+        this.mdate = mdate;
     }
 
     public int getTemp() {
@@ -40,14 +50,6 @@ public class Weather {
         this.temp_min = temp_min;
     }
 
-    public String getMdate() {
-        return mdate;
-    }
-
-    public void setMdate(String mdate) {
-        this.mdate = mdate;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -63,4 +65,5 @@ public class Weather {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
 }

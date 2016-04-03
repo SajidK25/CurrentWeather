@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
-        android:gravity="right"
+        android:gravity="center_horizontal"
         android:padding="10dp"
         android:text="2015-03-06"
         android:textColor="#ffffff"

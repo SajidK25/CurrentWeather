@@ -26,7 +26,7 @@ import java.util.List;
  * Created by sajidMacPro on 4/3/16.
  */
 public class Forecast extends AppCompatActivity {
-    String forecast_url = "http://api.openweathermap.org/data/2.5/forecast?id="+"&appid=fec7a9fdb239c89d79724e223d71edbb";
+    String forecast_url = "http://api.openweathermap.org/data/2.5/forecast?id=";
 
     ProgressDialog PD;
 

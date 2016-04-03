@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btn.setOnClickListener(this);
     }
-    public void makeJsonRequest(String full_url) {
+    public void makejsonreq(String full_url) {
 
         PD.show();
 
@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     icon = jo.getString("icon");
 
                     // icon url
-                    String icon_url = "http://openweathermap.org/img/w/" + icon + ".png";
+                    String icon_url = "http://openweathermap.org/img/w/"
+                            + icon + ".png";
 
                     ImageLoader imageLoader = MyApplication
                             .getInstance().getImageLoader();
@@ -93,7 +94,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     place_tv.setText(name + "," + country);
 
                     temp_tv.setText(temp + "\u2103");
-                    min_max_tv.setText(temp_min + "\u2103 /" + temp_max + "\u2103");
+                    min_max_tv.setText(temp_min + "\u2103 /" + temp_max
+                            + "\u2103");
                     desc_tv.setText(description);
 
                     iv.setImageUrl(icon_url, imageLoader);
@@ -120,25 +122,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
 
-        switch (v.getId()) {
+        switch (view.getId()) {
             case R.id.button1:
 
                 PD = new ProgressDialog(MainActivity.this);
                 PD.setMessage("Loading.....");
                 PD.setCancelable(false);
-                //String appID="&appid=fec7a9fdb239c89d79724e223d71edbb";
+                String appID="&appid=fec7a9fdb239c89d79724e223d71edbb";
                 String city = et.getText().toString();
 
-                String full_url = Current_URL + city;
-
-                makeJsonRequest(full_url);
+                String full_url = Current_URL + city + appID;
+            try {
+                makejsonreq(full_url);
                 break;
+
+            }catch (Exception e){
+                e.printStackTrace();
+
+            }
+
 
             case R.id.forecast:
 
-                Intent forecast_intent = new Intent(getApplicationContext(), Forecast.class);
+                Intent forecast_intent = new Intent(getApplicationContext(),
+                        Forecast.class);
 
                 forecast_intent.putExtra("id", id);
                 forecast_intent.putExtra("name", name);
